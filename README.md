@@ -22,11 +22,19 @@ abc
 no transaction
 ```
 ## Installation
-The utility can be run from Xcode directly or can be built and run via the command line with the following steps:
+The utility can be run directly in the terminal or from Xcode.
+
+### Run in Terminal
  1. Clone this repository
- 2. In the terminal, `cd` to the root directory of the project and then run the following commands:
+ 2. In the terminal, `cd` to the root directory of the project and run the following commands:
  3. `$ swift build` to compile the executable
  4. `$ .build/debug/KVStore` to run the exectuable just created
+
+### Run/View in Xcode
+ 1. Clone this repository
+ 2. In the terminal, `cd` to the root directory of the project and run the following commands:
+ 3. `$ swift package generate-xcodeproj` to generate the Xcode project file
+ 4. `open KVStore.xcodeproj` to view and build/run the file in Xcode
 
 ## Highlights
  * Uses a `Command` enum with associated values to structure commands and their corresponding arguments:
