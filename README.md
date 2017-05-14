@@ -54,7 +54,7 @@ The utility can be run directly in the terminal or from Xcode.
  * Ability to track and discard changes is driven by the `_transaction(_:, nested:)` method in `KVOStore.swift`, which recursively calls itself when the `BEGIN` command is issued and conversely returns when `COMMIT` is entered by the user.
  
  ## Opportunities for Enhancement
-Overall learned a lot doing this little project (never really used the Swift Package Manager or built a command line tool in Swift before). I'm really happy with the overall solution, however the recursive nature of the design makes the utility really tricky to unit test. I would welcome any and all suggestions on how to add some tests! :)
+Overall learned a lot doing this little project (never really used the Swift Package Manager or built a command line tool in Swift before) and I'm really happy with the overall solution. Although I attempted to expose key dependencies of the design, the recursive nature of the solution makes unit testing a little tricky (without having to pass launch arguments via scheme). I welcome any and all suggestions on how to add some tests! :)
 
 ## References
 Some references I found helpful along the way:
