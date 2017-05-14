@@ -10,26 +10,28 @@ import Foundation
 
 public final class KVStore {
   
-  typealias StoreType = [String:String]
+  public typealias StoreType = [String:String]
   
-  private let consoleIO = ConsoleIO()
- 
-  public init() {
-
+  lazy var consoleIO: IOProvider = ConsoleIO()
+  
+  private(set) var store: StoreType
+  
+  public init(_ store: StoreType = StoreType()) {
+    self.store = store
   }
  
   public func run() {
     
     consoleIO.write("Hello. Welcome to KVStore. Usage:")
-    print("SET <key> <value> to store the value for key")
-    print("GET <key> to return the current value for key")
-    print("DELETE <key> to remove the entry for key")
-    print("COUNT <value> to return the number of keys that have the given value")
-    print("BEGIN to start a new transaction")
-    print("COMMIT <key> to complete the current transaction")
-    print("ROLLBACK to revert to state prior to BEGIN call")
+    consoleIO.write("SET <key> <value> to store the value for key")
+    consoleIO.write("GET <key> to return the current value for key")
+    consoleIO.write("DELETE <key> to remove the entry for key")
+    consoleIO.write("COUNT <value> to return the number of keys that have the given value")
+    consoleIO.write("BEGIN to start a new transaction")
+    consoleIO.write("COMMIT <key> to complete the current transaction")
+    consoleIO.write("ROLLBACK to revert to state prior to BEGIN call")
     
-    _transaction()
+    store = _transaction(store)
   }
   
   /// Batch operation which allows the user to commit or roll back their changes to the key-value store. This includes the ability to nest transactions and roll back and commit within nested transactions.
@@ -99,4 +101,3 @@ public final class KVStore {
     }
   }
 }
-

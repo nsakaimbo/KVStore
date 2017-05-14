@@ -8,16 +8,22 @@
 
 import Foundation
 
-final class ConsoleIO {
-  
-  /// Represents the choice of output stream
-  ///
-  /// - error: Standard Error (stderr)
-  /// - standard: Standard Output (stdout)
-  enum OutputType {
-    case error
-    case standard
-  }
+/// Represents the choice of output stream
+///
+/// - error: Standard Error (stderr)
+/// - standard: Standard Output (stdout)
+enum OutputType {
+  case error
+  case standard
+}
+
+protocol IOProvider {
+  func getInput() -> String
+  func getCommand(_ input: String) -> Command?
+  func write(_ message: String, to stream: OutputType)
+}
+
+extension IOProvider {
   
   func getInput() -> String {
     let keyboard = FileHandle.standardInput
@@ -52,3 +58,4 @@ final class ConsoleIO {
   }
 }
 
+final class ConsoleIO: IOProvider { }
