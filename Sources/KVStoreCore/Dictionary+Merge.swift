@@ -1,5 +1,5 @@
 //
-//  Array+Merge.swift
+//  Dictionary+Merge.swift
 //  KVStore
 //
 //  Created by Nicholas Sakaimbo on 5/13/17.
