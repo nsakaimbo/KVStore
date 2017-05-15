@@ -27,8 +27,10 @@ The utility can be run directly in the terminal or from Xcode.
 ### Run in Terminal
  1. Clone this repository
  2. In the terminal, `cd` to the root directory of the project and run the following commands:
- 3. `$ swift build` to compile the executable
- 4. `$ .build/debug/KVStore` to run the exectuable just created
+ 3. `$ swift build -c release -Xswiftc -static-stdlib` to compile the executable in release mode
+ 4. `cd .build/release`
+ 5. `$ cp -f KVStore /usr/local/bin/KVStore` to copy the executable to `/usr/local/bin` 
+ 6. Now from any terminal session, you can enter `KVStore` to run the tool, `CTRL+C` to quit 
 
 ### Run/View in Xcode
  1. Clone this repository
