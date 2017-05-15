@@ -19,4 +19,19 @@ extension Dictionary {
       self[key] = value
     }
   }
+  
+  /// Merges the contents of the receiver with another dictionary, returning a new dictionary of merged key-value pairs.
+  ///
+  /// - Parameter dictionary: A dictionary with the same `Key` and `Value` types as the receiver.
+  /// - Returns: A dictionary with the merged key-value pairs
+  func merged(with dictionary: Dictionary<Key,Value>) -> Dictionary<Key,Value> {
+    
+    var copy = self
+    
+    for (key, value) in dictionary {
+      copy[key] = value
+    }
+    return copy
+  }
+  
 }
