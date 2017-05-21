@@ -14,10 +14,11 @@ public final class KVStore {
   
   lazy var consoleIO: IOProvider = ConsoleIO()
   
-  private(set) var store: StoreType
+  var store: StoreType = [:]
+  var _storeEditingStack = Stack<StoreType>()
   
-  public init(_ store: StoreType = StoreType()) {
-    self.store = store
+  public init(_ input: StoreType = StoreType()) {
+    self.store = input
   }
  
   public func run() {
@@ -31,72 +32,72 @@ public final class KVStore {
     consoleIO.write("COMMIT <key> to complete the current transaction")
     consoleIO.write("ROLLBACK to revert to state prior to BEGIN call")
     
-    store = _transaction(store)
+    while true {
+      
+      guard let command = consoleIO.getCommand(consoleIO.getInput()) else {
+        return
+      }
+      
+      _transaction(command)
+    }
   }
   
   /// Batch operation which allows the user to commit or roll back their changes to the key-value store. This includes the ability to nest transactions and roll back and commit within nested transactions.
   ///
   /// To facilitate change tracking, this method calls itself recursively when the `BEGIN` command is entered.
-  /// - Parameters:
-  ///   - input: A copy of the key-value store of the parent (if any). Empty by default.
-  ///   - nested: A boolean flag indicating whether or not this is a recursive call. Set to `false` by default.
-  /// - Returns: Key-value store that includes changes to the `input` parameter (if any).
-  @discardableResult func _transaction(_ input: StoreType = [:], nested: Bool = false) -> StoreType {
+  func _transaction(_ command: Command) {
     
-    var copy = StoreType()
-    
-    copy.merge(with: input)
-    
-    transactionLoop: while true {
+    switch command {
       
-      guard let command = consoleIO.getCommand(consoleIO.getInput()) else {
-        continue transactionLoop
+    case .set(let key, let value):
+      store[key] = value
+      
+    case .get(let key):
+      
+      let message:String = store[key] ?? "key not set"
+      consoleIO.write(message)
+      
+    case .delete(let key):
+      
+      store[key] = nil
+      
+    case .count(let value):
+      
+      let count: Int = store.filter{$0.value == value}.count
+      consoleIO.write("\(count)")
+      
+    case.begin:
+      
+      // Nested transaction starts out as a copy of the current transaction
+      let newTransaction = store
+      
+      // Preserve current transaction in history
+      _storeEditingStack.push(store)
+      
+      // Update current transaction
+      store = newTransaction
+      
+    case .commit:
+      
+      if _storeEditingStack.isEmpty {
+        consoleIO.write("no transaction")
+      }
+      else {
+        
+        _ = _storeEditingStack.pop()
+        
+        if !_storeEditingStack.isEmpty {
+          _storeEditingStack.push(store)
+        }
       }
       
-      switch command {
-        
-      case .set(let key, let value):
-        copy[key] = value
-        continue transactionLoop
-        
-      case .get(let key):
-        let message:String = copy[key] ?? "key not set"
-        consoleIO.write(message)
-        
-        continue transactionLoop
-        
-      case .delete(let key):
-        
-        copy[key] = nil
-        continue transactionLoop
-        
-      case .count(let value):
-        
-        let count: Int = copy.filter{$0.value == value}.count
-        consoleIO.write("\(count)")
-        continue transactionLoop
-        
-      case.begin:
-        
-        copy.merge(with: _transaction(copy, nested: true))
-        
-        continue transactionLoop
-        
-      case .commit where !nested:
+    case .rollback:
+      
+      if _storeEditingStack.isEmpty {
         consoleIO.write("no transaction")
-        continue transactionLoop
-        
-      case .commit:
-        return copy
-        
-      case .rollback where !nested:
-        consoleIO.write("no transaction")
-        continue transactionLoop
-        
-      case .rollback:
-        
-        copy = StoreType()
-        return copy
+      }
+      else if let first = _storeEditingStack.pop() {
+        store = first
       }
     }
   }
