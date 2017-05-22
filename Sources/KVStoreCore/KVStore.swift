@@ -20,7 +20,7 @@ public final class KVStore {
   public init(_ input: StoreType = StoreType()) {
     self.store = input
   }
- 
+  
   public func run() {
     
     consoleIO.write("Hello. Welcome to KVStore. Usage:")

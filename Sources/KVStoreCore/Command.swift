@@ -43,7 +43,7 @@ enum Command {
     case "get" where arguments.count != 1:
       throw Error.invalidArguments(reason: "GET: Invalid arguments.\nUsage: GET <key>")
     case "get":
-       self = Command.get(key: arguments[0])
+      self = Command.get(key: arguments[0])
     case "delete" where arguments.count != 1:
       throw Error.invalidArguments(reason: "DELETE: Invalid arguments.\nUsage: DELETE <key>")
     case "delete":
@@ -77,8 +77,8 @@ extension Command.Error: LocalizedError {
     switch self {
     case .invalidArguments (let reason):
       return reason
-      case .invalidCommand(let command):
-        return "Command not found: \(command.uppercased())."
+    case .invalidCommand(let command):
+      return "Command not found: \(command.uppercased())."
     }
   }
 }

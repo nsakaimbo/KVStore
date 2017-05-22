@@ -6,7 +6,7 @@
 //
 //
 
-import KVStoreCore 
+import KVStoreCore
 
 let store = KVStore()
 
