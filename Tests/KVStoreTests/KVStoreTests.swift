@@ -34,13 +34,13 @@ class KVStoreTests: XCTestCase {
     sut._transaction(Command.set(key: "foo", value: "123"))
     sut._transaction(Command.set(key: "bar", value: "abc"))
     
-    // When a nested transaction is commited
+    // When a nested transaction is rolled back
     sut._transaction(Command.begin)
     sut._transaction(Command.set(key: "foo", value: "456"))
     sut._transaction(Command.set(key: "bar", value: "def"))
     sut._transaction(Command.rollback)
     
-    // Then the store will be equal to the modified values
+    // Then the store will be equal to it's initial values
     XCTAssertEqual(sut.store, ["foo":"123", "bar":"abc"])
   }
   
