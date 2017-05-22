@@ -17,13 +17,13 @@ enum OutputType {
   case standard
 }
 
-protocol IOProvider {
+protocol IOProviding {
   func getInput() -> String
   func getCommand(_ input: String) -> Command?
   func write(_ message: String, to stream: OutputType)
 }
 
-extension IOProvider {
+extension IOProviding {
   
   func getInput() -> String {
     let keyboard = FileHandle.standardInput
@@ -58,4 +58,4 @@ extension IOProvider {
   }
 }
 
-final class ConsoleIO: IOProvider { }
+final class ConsoleIO: IOProviding { }

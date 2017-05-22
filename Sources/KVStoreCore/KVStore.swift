@@ -12,7 +12,7 @@ public final class KVStore {
   
   public typealias StoreType = [String:String]
   
-  lazy var consoleIO: IOProvider = ConsoleIO()
+  lazy var consoleIO: IOProviding = ConsoleIO()
   
   var store: StoreType = [:]
   var _storeEditingStack = Stack<StoreType>()
