@@ -14,8 +14,8 @@ public final class KVStore {
   
   lazy var consoleIO: IOProviding = ConsoleIO()
   
-  var store: StoreType = [:]
-  var _storeEditingStack = Stack<StoreType>()
+  private(set) var store: StoreType = [:]
+  private var _storeEditingStack = Stack<StoreType>()
   
   public init(_ input: StoreType = StoreType()) {
     self.store = input
