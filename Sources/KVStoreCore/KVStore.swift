@@ -35,7 +35,7 @@ public final class KVStore {
     while true {
       
       guard let command = consoleIO.getCommand(consoleIO.getInput()) else {
-        return
+        continue
       }
       
       _transaction(command)
